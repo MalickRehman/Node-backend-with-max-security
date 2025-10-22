@@ -1,11 +1,26 @@
-# Nexus UI Backend
+# 🔐 Nexus UI Backend
 
-A comprehensive, production-ready Node.js backend with **every possible security feature** implemented.
+A comprehensive, production-ready Node.js backend with **every possible security feature** implemented. Built with enterprise-grade authentication, multiple 2FA methods, and advanced security monitoring.
 
 [![Node.js](https://img.shields.io/badge/Node.js-22.x-green.svg)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-5.x-blue.svg)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green.svg)](https://www.mongodb.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+[![JWT](https://img.shields.io/badge/Auth-JWT-orange.svg)](https://jwt.io/)
+[![2FA](https://img.shields.io/badge/2FA-TOTP%20%7C%20Email%20%7C%20WhatsApp-success.svg)](https://en.wikipedia.org/wiki/Multi-factor_authentication)
+[![Tests](https://img.shields.io/badge/Tests-71%20Passing-brightgreen.svg)](./tests)
+[![Security](https://img.shields.io/badge/Security-Enterprise%20Grade-critical.svg)](./SECURITY-APPROACH.md)
+[![API Docs](https://img.shields.io/badge/API-Documented-blue.svg)](./API_DOCUMENTATION.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+---
+
+## ⭐ Star this repo if you find it helpful!
+
+**[📺 View Demo](#)** | **[📖 Documentation](./API_DOCUMENTATION.md)** | **[🐛 Report Bug](../../issues)** | **[💡 Request Feature](../../issues)**
+
+---
 
 ## 🚀 Features
 
@@ -19,11 +34,24 @@ A comprehensive, production-ready Node.js backend with **every possible security
   - Email verification
   - Password reset with secure tokens
 
-- **Two-Factor Authentication (2FA)**
-  - TOTP (Time-based One-Time Password)
-  - QR code generation for authenticator apps
-  - Backup codes for account recovery
-  - Secure 2FA setup and verification flow
+- **Two-Factor Authentication (2FA)** - **NEW! 🎉**
+  - **📱 TOTP (Authenticator Apps)** - Google Authenticator, Authy, etc.
+    - QR code generation for easy setup
+    - Backup codes for account recovery (10 one-time codes)
+    - Secure 2FA setup and verification flow
+  - **📧 Email 2FA** - 6-digit code sent via email
+    - Professional HTML email templates
+    - 10-minute code expiry
+    - Rate limiting per user
+  - **💬 WhatsApp 2FA** - 6-digit code via WhatsApp (Twilio)
+    - Instant message delivery
+    - Secure code generation
+    - Phone number verification
+  - **Security Features**
+    - Failed attempt tracking (5 attempts → 1-hour lock)
+    - One-time use codes
+    - Method preference per user
+    - Comprehensive 2FA documentation ([TWO_FACTOR_AUTH.md](./TWO_FACTOR_AUTH.md))
 
 - **Authorization**
   - Role-Based Access Control (RBAC)
@@ -117,6 +145,7 @@ A comprehensive, production-ready Node.js backend with **every possible security
   - Filtering and sorting
   - API versioning (v1)
   - Health check endpoint
+  - **Swagger/OpenAPI Documentation** - Interactive API docs at `/api-docs`
 
 - **Testing**
   - Unit tests for services
@@ -221,7 +250,24 @@ RATE_LIMIT_LOGIN_MAX=5
 # Security
 BCRYPT_ROUNDS=12
 HSTS_MAX_AGE=31536000
+
+# Email Configuration (for Email 2FA)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+EMAIL_FROM=noreply@yourdomain.com
+
+# Twilio Configuration (for WhatsApp 2FA)
+TWILIO_ACCOUNT_SID=your-account-sid
+TWILIO_AUTH_TOKEN=your-auth-token
+TWILIO_PHONE_NUMBER=+1234567890
+TWILIO_WHATSAPP_NUMBER=whatsapp:+1234567890
 ```
+
+> 📧 **Email 2FA Setup:** Use Gmail App Password or your SMTP provider
+> 💬 **WhatsApp 2FA Setup:** Sign up at [Twilio](https://www.twilio.com/) and configure WhatsApp sandbox
 
 ### Generating Secure Secrets
 
@@ -270,7 +316,23 @@ npm test -- --coverage
 
 ## 📚 API Documentation
 
-Comprehensive API documentation is available in [API_DOCUMENTATION.md](./API_DOCUMENTATION.md).
+### Interactive Swagger Documentation
+
+Once the server is running, access the interactive API documentation:
+
+**Swagger UI:** `http://localhost:5000/api-docs`
+
+Features:
+- 🎯 Try out endpoints directly from the browser
+- 📋 View all request/response schemas
+- 🔐 Test authentication flows
+- 📖 Complete endpoint documentation
+
+### Additional Documentation
+
+- **[API_DOCUMENTATION.md](./API_DOCUMENTATION.md)** - Comprehensive API guide
+- **[TWO_FACTOR_AUTH.md](./TWO_FACTOR_AUTH.md)** - 2FA implementation guide
+- **[SECURITY-APPROACH.md](./SECURITY-APPROACH.md)** - Security implementation details
 
 ### Quick Start
 
@@ -312,8 +374,14 @@ curl -X GET http://localhost:5000/api/v1/auth/me \
 | GET | `/auth/me` | Get current user | Required |
 | POST | `/auth/refresh` | Refresh access token | Public |
 | POST | `/auth/change-password` | Change password | Required |
-| POST | `/auth/2fa/setup` | Setup 2FA | Required |
-| POST | `/auth/2fa/enable` | Enable 2FA | Required |
+| POST | `/auth/2fa/setup` | Setup TOTP 2FA | Required |
+| POST | `/auth/2fa/enable` | Enable TOTP 2FA | Required |
+| POST | `/auth/2fa/verify` | Verify 2FA token | Public |
+| GET | `/auth/2fa/status` | Get 2FA status | Required |
+| POST | `/auth/2fa/email/send` | Send email 2FA code | Public |
+| POST | `/auth/2fa/email/verify` | Verify email code | Public |
+| POST | `/auth/2fa/whatsapp/send` | Send WhatsApp code | Public |
+| POST | `/auth/2fa/whatsapp/verify` | Verify WhatsApp code | Public |
 | GET | `/users` | Get all users | Admin |
 | GET | `/users/:id` | Get user by ID | Admin/Owner |
 | PUT | `/users/me` | Update profile | Required |
@@ -511,8 +579,58 @@ Access the security dashboard at `/api/v1/security/dashboard` (admin only) to vi
 For issues, questions, or contributions:
 
 - **Documentation:** [API Documentation](./API_DOCUMENTATION.md)
+- **2FA Guide:** [Two-Factor Authentication](./TWO_FACTOR_AUTH.md)
 - **Security:** [Security Approach](./SECURITY-APPROACH.md)
+- **Issues:** [Report a Bug](../../issues)
+- **Discussions:** [Join the Discussion](../../discussions)
+
+---
+
+## 🌟 Make Your Repository Discoverable
+
+### Add GitHub Topics
+
+Go to your repository → Click ⚙️ next to "About" → Add these topics:
+
+```
+nodejs, express, jwt, authentication, 2fa, two-factor-authentication,
+security, mongodb, rest-api, backend, totp, email-verification,
+whatsapp, oauth, rbac, authorization, api, security-audit,
+rate-limiting, helmet, bcrypt, session-management
+```
+
+### Share Your Project
+
+- 🐦 **Twitter/X:** Share with #nodejs #expressjs #security #2fa
+- 💼 **LinkedIn:** Post about your security implementation
+- 📝 **Dev.to:** Write an article about your security approach
+- 🗨️ **Reddit:** r/nodejs, r/webdev, r/programming
+- 🏆 **Product Hunt:** If launching as a product/tool
+
+### Repository Settings
+
+1. **Add Description:** "🔐 Enterprise-grade Node.js backend with JWT, 3 types of 2FA, and advanced security features"
+2. **Add Website:** Link to your deployed API or documentation
+3. **Enable Discussions:** For community support
+4. **Enable Issues:** For bug reports and feature requests
+5. **Add License:** MIT license included
+
+---
+
+## 📈 Project Stats
+
+![GitHub stars](https://img.shields.io/github/stars/YOUR_USERNAME/nexus-ui-backend?style=social)
+![GitHub forks](https://img.shields.io/github/forks/YOUR_USERNAME/nexus-ui-backend?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/YOUR_USERNAME/nexus-ui-backend?style=social)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 **Made with ❤️ and 🔐 Security in Mind**
+
+⭐ **If you find this project helpful, please consider giving it a star!** ⭐
