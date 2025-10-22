@@ -1,0 +1,123 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by testing tools
+coverage/
+*.lcov
+.nyc_output/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# Uploads & User generated content
+uploads/
+public/uploads/
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Redis dump
+dump.rdb
+
+# SSL/TLS certificates (keep example certs, ignore actual ones)
+*.pem
+*.key
+*.crt
+*.cert
+!example.pem
+!example.key
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Jest cache
+.jest/
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettiercache
+
+# Package manager directories
+.pnp/
+.pnp.js
+.yarn/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Production files
+production/
+pm2.config.js
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Misc
+.cache/
+.parcel-cache/

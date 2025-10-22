@@ -1,0 +1,22 @@
+# Development Dockerfile with hot reload
+FROM node:20-alpine
+
+# Install development tools
+RUN apk add --no-cache git
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev)
+RUN npm install
+
+# Copy source
+COPY . .
+
+# Expose ports
+EXPOSE 5000 9229
+
+# Start with nodemon for hot reload
+CMD ["npm", "run", "dev"]

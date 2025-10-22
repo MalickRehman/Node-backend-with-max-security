@@ -1,0 +1,97 @@
+# Dependabot Configuration
+# Automated dependency updates and security patches
+
+version: 2
+updates:
+  # npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+
+    # Pull request settings
+    open-pull-requests-limit: 10
+    pull-request-branch-name:
+      separator: "-"
+
+    # Commit message preferences
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+
+    # Reviewers and assignees
+    reviewers:
+      - "security-team"
+    assignees:
+      - "lead-developer"
+
+    # Labels
+    labels:
+      - "dependencies"
+      - "security"
+
+    # Rebase strategy
+    rebase-strategy: "auto"
+
+    # Versioning strategy
+    versioning-strategy: "increase-if-necessary"
+
+    # Ignore specific dependencies (if needed)
+    ignore:
+      # Ignore major version updates for stable packages
+      - dependency-name: "express"
+        update-types: ["version-update:semver-major"]
+
+    # Group related dependencies
+    groups:
+      # Security packages
+      security-updates:
+        patterns:
+          - "helmet"
+          - "@sentry/*"
+          - "express-rate-limit"
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Database packages
+      database-updates:
+        patterns:
+          - "mongoose"
+          - "mongodb"
+          - "redis"
+        update-types:
+          - "patch"
+
+      # Development dependencies
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "docker"
+      - "dependencies"
+
+  # GitHub Actions (if you have workflows)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "ci-cd"
+      - "dependencies"
