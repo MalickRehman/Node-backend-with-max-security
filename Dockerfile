@@ -2,7 +2,7 @@
 # Multi-stage build for optimized image size
 
 # Stage 1: Build stage
-FROM node:20-alpine AS builder
+FROM node:25-alpine AS builder
 
 # Install build dependencies
 RUN apk add --no-cache python3 make g++
@@ -19,7 +19,7 @@ RUN npm ci
 COPY . .
 
 # Stage 2: Production stage
-FROM node:20-alpine
+FROM node:25-alpine
 
 # Install ClamAV for malware scanning
 RUN apk add --no-cache \
