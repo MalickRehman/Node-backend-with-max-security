@@ -70,7 +70,7 @@
     "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.9.0",
+    "mongodb": "^7.0.0",
     "mongoose": "^8.7.1",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.9",
